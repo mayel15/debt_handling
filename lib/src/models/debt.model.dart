@@ -12,7 +12,6 @@ class DebtModel {
   double amount;
   String currency;
   DateTime deadlineDate;
-  bool isPaid;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -23,7 +22,6 @@ class DebtModel {
       required this.currency,
       required this.personFullName,
       required this.deadlineDate,
-      required this.isPaid,
       required this.createdAt,
       required this.updatedAt});
 
@@ -35,7 +33,6 @@ class DebtModel {
       'currency': currency,
       'personFullName': personFullName,
       'deadlineDate': deadlineDate.toIso8601String(),
-      'isPaid': isPaid,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String()
     };
@@ -49,7 +46,6 @@ class DebtModel {
         currency: map['currency'],
         personFullName: map['personFullName'],
         deadlineDate: DateTime.parse(map['deadlineDate']),
-        isPaid: map['isPaid'],
         createdAt: DateTime.parse(map['createdAt']),
         updatedAt: DateTime.parse(map['updatedAt']));
   }

@@ -4,10 +4,12 @@ import 'package:intl/intl.dart';
 
 class DebtCard extends StatelessWidget {
   final DebtModel item;
+  final VoidCallback onPressed;
 
   const DebtCard({
     super.key,
     required this.item,
+    required this.onPressed,
   });
 
   // var formatEUR = NumberFormat.simpleCurrency(locale: 'fr_FR', name: 'EUR');
@@ -43,14 +45,22 @@ class DebtCard extends StatelessWidget {
                   style: const TextStyle(
                       fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-                Container(
-                  height: 50,
-                  width: 50,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.black,
-                  ),
-                  child: const Icon(Icons.arrow_forward, color: Colors.white),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: ElevatedButton(
+                      onPressed: onPressed,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                      ),
+                      child: item.debtType == DebtType.TO_RECEIVE
+                          ? const Text(
+                              "Recevoir",
+                              style: TextStyle(color: Colors.white),
+                            )
+                          : const Text(
+                              "Payer",
+                              style: TextStyle(color: Colors.white),
+                            )),
                 )
               ],
             ),

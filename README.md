@@ -15,36 +15,33 @@
 
 # ➕ More
 
-- [provider](https://pub.dev/packages/syncfusion_flutter_datepicker)
-- [path_provider](https://pub.dev/packages/path_provider)
-- [http](https://pub.dev/packages/http)
-- [filter_list](https://pub.dev/packages/filter_list)
+- [provider](https://pub.dev/packages/provider)
+- [sqflite](https://pub.dev/packages/sqflite)
 
 # 🧐 Description du projet et choix d'implémentation
 
 ## 📄 Description du projet
 
-`Debt Handling` est une application de gestion de dettes pour aider les utilisateurs à suivre et gérer leurs dettes de manière efficace. Chaque utilisateur aura une base de données local où ses données seront sauvegarder. Ainsi, l'utilisation de l'application n'aura pas besoin de connexion internet.
-Voici une liste de fonctionnalités que tu pourrais implémenter pour rendre l'application utile et conviviale :
+`Debt Handling` est une application de gestion de dettes pour aider les utilisateurs à suivre et gérer leurs dettes de manière efficace. Chaque utilisateur a une base de données locale où ses données seront sauvegardées. Ainsi, l'utilisation de l'application n'a pas besoin de connexion internet.
+Voici les fonctionnalités :
 
-- ajouter, modifier, supprimer une dette (à rembourser, ou à encaisser) avec des informations comme le montant de la dette (avec plusieurs devises possibles), la personne concernée (possibilité de choisir depuis l'annuaire téléphoniquen ou des personnes qui existent déjà dans l'app ou entrer manuellement), la date de l'échéance (avec ou sans la date de d'emprunt ou de prêt), et uen note facultatif
-- payer (ou rembourser une dette) une dette que je dois avec la possibilité de payer la totalité ou un pourcentage
-- encaisser une dette qu'on me doit avec la possibilité d'encaisser la totalité ou un pourcentage
-- avoir l'historique des paiements ou remboursement pour chaque personne
-- avoir la liste des dettes à rembourser ou à encaisser avec les dates d'échéance (si c'était)
-- mettre en emphase les dettes arrivées à écheances et pas payés / remboursés
+- ajouter une dette (à rembourser ou à encaisser) avec des informations comme le montant de la dette (avec un choix de devises possibles `EUR [Euro], USD [Dollar] & XOF [Franc CFA]`), la personne concernée (son nom complet) et la date d'échéance de la dette
+- payer (ou rembourser) une dette qui étéait due
+- recevoir (ou encaisser) une dette que quelqu'un devait à l'utilisateur
+
+⚠️ L'encaissement ou le remboursement supprime la dette de la base de données ⚠️
+
+Les tabs `À rembourser` ou `À encaisser` permmette de filtrer facilement les catégories de dettes.
 
 ## ⚙️ Choix d'implémentation
 
-### Utilisation de l'API SNCF (Objets Trouvés)
+### Base de données local
 
-### Stockage local avec des fichiers
-
-Pour le stockage de la date de dernière consultation, un `fichier` est utilisé en local pour la sauvegarder (lecture et écriture) lorsque l'application est lancée. Cependant `shared_preferences` pourrait être utiliser pour faire la même tâche.
+`SQLite` est utilisée pour stocker les données localement, permettant l'accès aux informations de dettes sans connexion Internet. SQLite est léger, rapide et parfaitement adapté aux applications mobiles pour une gestion efficace et sécurisée des données
 
 ### Gestion des états avec Provider
 
-`Provider` est utilisé pour gérer les états de l'application de manière efficace. Il permet une séparation claire des responsabilités entre les différentes parties de l'application, facilitant la mise à jour dynamique de l'interface lorsque les données changent (nouveaux objets trouvés, filtres, etc.).
+`Provider` est utilisé pour gérer les états de l'application de manière efficace. Il permet une séparation claire des responsabilités entre les différentes parties de l'application, facilitant la mise à jour dynamique de l'interface lorsque les données changent (nouvelles dettes ajoutées, dettes supprimées, etc.).
 
 # Cloner le projet
 
@@ -53,10 +50,10 @@ Pour le stockage de la date de dernière consultation, un `fichier` est utilisé
   - `Flutter v3.24.1`
   - `Dart v3.5.1`
 
-- Cloner le projet avec `git clone https://github.com/mayel15/sncf_found_objects.git`
+- Cloner le projet avec `git clone https://github.com/mayel15/debt_handling.git`
 
 - Aller dans le répertoire du projet
 
 - Installer les dépendances avec `flutter packages get` ou `flutter pub add`
 
-- Lancer l'application et consulter les objets trouvés 🥳
+- Lancer l'application et trackez vos dettes en toute simplicité 🥳
