@@ -37,7 +37,7 @@ Les tabs `À rembourser` ou `À encaisser` permmettent de filtrer facilement les
 
 ## ⚙️ Choix d'implémentation
 
-### Base de données local
+### Base de données
 
 `SQLite` est utilisée pour stocker les données localement, permettant l'accès aux informations de dettes sans connexion Internet. SQLite est léger, rapide et parfaitement adapté aux applications mobiles pour une gestion efficace et sécurisée des données.
 
