@@ -33,13 +33,13 @@ Voici les fonctionnalités :
 
 ⚠️ L'encaissement ou le remboursement supprime la dette de la base de données ⚠️
 
-Les tabs `À rembourser` ou `À encaisser` permmette de filtrer facilement les catégories de dettes.
+Les tabs `À rembourser` ou `À encaisser` permmettent de filtrer facilement les catégories de dettes.
 
 ## ⚙️ Choix d'implémentation
 
-### Base de données local
+### Base de données
 
-`SQLite` est utilisée pour stocker les données localement, permettant l'accès aux informations de dettes sans connexion Internet. SQLite est léger, rapide et parfaitement adapté aux applications mobiles pour une gestion efficace et sécurisée des données
+`SQLite` est utilisée pour stocker les données localement, permettant l'accès aux informations de dettes sans connexion Internet. SQLite est léger, rapide et parfaitement adapté aux applications mobiles pour une gestion efficace et sécurisée des données.
 
 ### Gestion des états avec Provider
 
