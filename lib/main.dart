@@ -1,7 +1,18 @@
+import 'package:debt_handling/src/pages/add-modify-debt.page.dart';
+import 'package:debt_handling/src/pages/debt-details.page.dart';
+import 'package:debt_handling/src/pages/home.page.dart';
+import 'package:debt_handling/src/pages/infos.page.dart';
+import 'package:debt_handling/src/services/debt-database.service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MainApp());
+Future<void> main() async {
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => DebtDatabaseService(),
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -9,12 +20,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
+    return MaterialApp(title: 'Objets Trouvés', routes: {
+      '/': (context) => const HomePage(),
+      '/details': (context) => const DebtDetailsPage(),
+      '/infos': (context) => const InfosPage(),
+      '/add-modify': (context) => const AddModifyDebtPage(),
+    });
   }
 }
