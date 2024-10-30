@@ -15,7 +15,7 @@ class DebtDatabaseService extends ChangeNotifier {
 
   DebtDatabaseService._internal();
 
-  // Initialiser ou obtenir la base de données
+  // Init database
   Future<Database> get database async {
     if (_database != null) return _database!;
 
@@ -23,7 +23,6 @@ class DebtDatabaseService extends ChangeNotifier {
     return _database!;
   }
 
-  // Chemin vers la base de données et création de la table
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'debt_database.db');
     return await openDatabase(
@@ -33,7 +32,7 @@ class DebtDatabaseService extends ChangeNotifier {
     );
   }
 
-  // table creation
+  // Create database table
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE debts (
@@ -50,7 +49,7 @@ class DebtDatabaseService extends ChangeNotifier {
   }
 
   // create a debt
-  Future<void> insertDebt(DebtModel debt) async {
+  Future<void> addDebt(DebtModel debt) async {
     final db = await database;
     await db.insert(
       'debts',
@@ -105,4 +104,39 @@ class DebtDatabaseService extends ChangeNotifier {
       whereArgs: [id],
     );
   }
+
+  Future close() async {
+    final db = await _instance.database;
+    db.close();
+  }
+}
+
+void main() {
+  final DebtDatabaseService databaseService = DebtDatabaseService();
+
+  // debt example
+  final debt = DebtModel(
+    id: '1',
+    debtType: DebtType.TO_PAY,
+    personFullName: 'John Doe',
+    amount: 500.0,
+    currency: 'USD',
+    deadlineDate: DateTime.parse('2023-06-30'),
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );
+
+  // add debt
+  databaseService.addDebt(debt);
+
+  // get all debts
+  final debts = databaseService.getDebts();
+  print("all debts: $debts");
+
+  // get a debt by id
+  final debtById = databaseService.getDebtById('1');
+  print("debt by id: $debtById");
+
+  // delete a debt
+  databaseService.deleteDebt('1');
 }

@@ -13,109 +13,33 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  DateTimeRange selectedDateRange = DateTimeRange(
-    start: DateTime.now(),
-    end: DateTime.now(),
-  );
-
-  final currentMonth = DateTime.now().month;
-
-  @override
-  // void initState() {
-  //   super.initState();
-  //   updateLastConsultationDate(DateTime.now());
-  //   //fileService.writeLastConsulationDate("2024-10-01");
-  // }
-
-  // void updateLastConsultationDate(DateTime date) {
-  //   FileService fileService = FileService();
-  //   fileService.writeLastConsulationDate(date.toString());
-  // }
-
-  // void handleDateRangeSelected(BuildContext context) async {
-  //   final DateTimeRange? dateTimeRangePicked = await showDateRangePicker(
-  //       context: context,
-  //       firstDate: DateTime.parse("2024-$currentMonth-01"),
-  //       lastDate: DateTime.now()); // range is only from 2000 to
-  //   if (dateTimeRangePicked != null) {
-  //     setState(() {
-  //       selectedStartDate = dateTimeRangePicked.start;
-  //       selectedEndDate = dateTimeRangePicked.end;
-  //     });
-  //   }
-  // }
-
-  //Listes des objets perdus
-  final List<DebtModel> debtsTest = [
-    DebtModel(
-      id: "1",
-      amount: 100,
-      currency: "€",
-      personFullName: "John Doe",
-      isPaid: true,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-      deadlineDate: DateTime.now(),
-      debtType: DebtType.TO_PAY,
-    ),
-  ];
+  // final List<DebtModel> debtsTest = [
+  //   DebtModel(
+  //     id: "1",
+  //     amount: 100,
+  //     currency: "€",
+  //     personFullName: "John Doe",
+  //     createdAt: DateTime.now(),
+  //     updatedAt: DateTime.now(),
+  //     deadlineDate: DateTime.now(),
+  //     debtType: DebtType.TO_PAY,
+  //   ),
+  // ];
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.sizeOf(context).width;
     double height = MediaQuery.sizeOf(context).height;
 
-    // void openFilterOriginStationDialog(List<String> originStationList) async {
-    //   await FilterListDialog.display<String>(
-    //     context,
-    //     listData: originStationList,
-    //     selectedListData:
-    //         seletedOriginStationNamesList.whereType<String>().toList(),
-    //     choiceChipLabel: (category) => category,
-    //     validateSelectedItem: (list, val) => list!.contains(val),
-    //     onItemSearch: (category, query) {
-    //       return category.toLowerCase().contains(query.toLowerCase());
-    //     },
-    //     onApplyButtonClick: (list) {
-    //       setState(() {
-    //         list!.isEmpty
-    //             ? seletedOriginStationNamesList = []
-    //             : seletedOriginStationNamesList = list;
-    //       });
-    //       Navigator.pop(context);
-    //     },
-    //     resetButtonText: "Reinitialiser",
-    //     applyButtonText: "Appliquer",
-    //     allButtonText: "Tout",
-    //     selectedItemsText: "gares sélectionnées",
-    //   );
-    // }
-
-    // void openFilterCategoryDialog(List<String> categoryList) async {
-    //   await FilterListDialog.display<String>(
-    //     context,
-    //     listData: categoryList,
-    //     selectedListData:
-    //         selectedObjectCategoriesList.whereType<String>().toList(),
-    //     choiceChipLabel: (category) => category,
-    //     validateSelectedItem: (list, val) => list!.contains(val),
-    //     onItemSearch: (category, query) {
-    //       return category.toLowerCase().contains(query.toLowerCase());
-    //     },
-    //     onApplyButtonClick: (list) {
-    //       setState(() {
-    //         list!.isEmpty
-    //             ? selectedObjectCategoriesList = []
-    //             : selectedObjectCategoriesList = list;
-    //       });
-    //       Navigator.pop(context);
-    //     },
-    //     resetButtonText: "Reinitialiser",
-    //     applyButtonText: "Appliquer",
-    //     allButtonText: "Tout",
-    //     selectedItemsText: "catégories sélectionnées",
-    //   );
-    // }
+    void handleOnPressedDebtButton(
+        DebtDatabaseService db, DebtModel item) async {
+      try {
+        await db.deleteDebt(item.id);
+        setState(() {});
+      } catch (e) {
+        print("Error deleting debt: $e");
+      }
+    }
 
     return MaterialApp(
         home: DefaultTabController(
@@ -133,7 +57,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {
-                Navigator.pushNamed(context, '/add-modify');
+                Navigator.pushNamed(context, '/add-debt');
               },
             ),
           ],
@@ -141,6 +65,8 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: const Color.fromARGB(217, 217, 217, 217),
 
           bottom: const TabBar(
+            labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            unselectedLabelColor: Colors.grey,
             tabs: [
               Tab(text: "À rembourser"),
               Tab(text: "À encaisser"),
@@ -154,46 +80,76 @@ class _HomePageState extends State<HomePage> {
                   future: debtDatabaseService.getDebts(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      List<Widget> debts = [];
-                      // for (DebtModel item in snapshot.data!) {
-                      //   debts.add(DebtCard(
-                      //     item: item,
-                      //   ));
-                      // }
-                      for (DebtModel item in debtsTest) {
-                        debts.add(DebtCard(
-                          item: item,
-                        ));
+                      List<Widget> debtsToPay = [];
+                      List<Widget> debtsToReceive = [];
+                      for (DebtModel item in snapshot.data!) {
+                        if (item.debtType == DebtType.TO_PAY) {
+                          debtsToPay.add(DebtCard(
+                            item: item,
+                            onPressed: () => {
+                              handleOnPressedDebtButton(
+                                debtDatabaseService,
+                                item,
+                              ),
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Dette remboursée'),
+                                ),
+                              )
+                            },
+                          ));
+                        } else if (item.debtType == DebtType.TO_RECEIVE) {
+                          debtsToReceive.add(DebtCard(
+                            item: item,
+                            onPressed: () => {
+                              handleOnPressedDebtButton(
+                                debtDatabaseService,
+                                item,
+                              ),
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Dette encaissée'),
+                                ),
+                              )
+                            },
+                          ));
+                        }
                       }
-                      Widget debtsListView = ListView(
-                        children: debts,
+
+                      Widget debtsToPayListView = ListView(
+                        children: debtsToPay,
+                      );
+                      Widget debtsToReceiveListView = ListView(
+                        children: debtsToReceive,
                       );
                       return TabBarView(
                         children: [
                           Column(
                             children: [
                               Expanded(
-                                  child: debts.isEmpty
+                                  child: debtsToPay.isEmpty
                                       ? const Center(
-                                          child: Text("Aucun objet trouvé",
+                                          child: Text(
+                                              "Aucune dette à rembourser",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.normal,
                                                   fontSize: 24)),
                                         )
-                                      : debtsListView),
+                                      : debtsToPayListView),
                             ],
                           ),
                           Column(
                             children: [
                               Expanded(
-                                  child: debts.isEmpty
+                                  child: debtsToReceive.isEmpty
                                       ? const Center(
-                                          child: Text("Aucun objet trouvé",
+                                          child: Text(
+                                              "Aucune dette à encaisser",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.normal,
                                                   fontSize: 24)),
                                         )
-                                      : debtsListView),
+                                      : debtsToReceiveListView),
                             ],
                           ),
                         ],
