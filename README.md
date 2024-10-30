@@ -9,6 +9,8 @@
 
 # 📱 Demo de l'application
 
+![alt text](readme-images/debt-handling-demo.gif)
+
 # 🧰 Technos utilisées
 
 <a href="https://dart.dev" target="_blank" rel="noreferrer"> <img src="./readme-images/dart.svg" alt="dart" width="100" height="100"/> </a> <a href="https://flutter.dev" target="_blank" rel="noreferrer"> <img src="./readme-images/flutter.svg" alt="flutter" width="100" height="100"/> </a>
