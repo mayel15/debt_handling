@@ -19,7 +19,7 @@ jobs:
   
         - uses: subosito/flutter-action@v2
           with:
-            channel: 'v3.24.1'
+              flutter-version: 'v3.24.1'
         - run: flutter pub get
         - run: flutter build apk --release --split-per-abi
   
