@@ -27,7 +27,7 @@ jobs:
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/apk/release/*"
+          artifacts: "build/app/outputs/apk/release/android"
           tag: v0.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
 
@@ -48,6 +48,6 @@ jobs:
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/ios/release/*"
+          artifacts: "build/app/outputs/ios/release/ios"
           tag: v0.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
