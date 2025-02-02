@@ -59,3 +59,17 @@ Les tabs `À rembourser` ou `À encaisser` permmettent de filtrer facilement les
 - Installer les dépendances avec `flutter packages get` ou `flutter pub add`
 
 - Lancer l'application et trackez vos dettes en toute simplicité 🥳
+
+# Release dans l'app store / test flight
+
+- Open Xcode with the following command
+
+```
+open ios/Runner.xcworkspace
+```
+
+- Build ipa and submit
+
+```
+flutter build ipa
+```
